@@ -1,4 +1,5 @@
 import os
+import json  # ★修正点1： jsonをインポート
 from pathlib import Path
 from flask import Flask, send_from_directory
 from flask_cors import CORS
@@ -13,12 +14,21 @@ load_dotenv(dotenv_path=env_path)
 # Import your blueprint
 from routes.chat import chat_bp
 
+# --- ★修正点2： Firebase初期化ブロックを丸ごと置き換え ---
 # Initialize Firebase
-cred_path = os.getenv("FIREBASE_CRED_PATH")
-if not cred_path or not os.path.exists(cred_path):
-    raise FileNotFoundError(f"Firebase credential file not found at path: {cred_path}")
-cred = credentials.Certificate(cred_path)
+key_json_string = os.getenv("FIREBASE_KEY_JSON") # Renderで設定した "FIREBASE_KEY_JSON" を読み込む
+if not key_json_string:
+    raise ValueError("FIREBASE_KEY_JSON environment variable not set.")
+
+try:
+    # 環境変数から読み込んだJSON文字列を辞書（dict）に変換
+    key_dict = json.loads(key_json_string)
+except json.JSONDecodeError:
+    raise ValueError("Failed to decode FIREBASE_KEY_JSON. Check the value in Render.")
+
+cred = credentials.Certificate(key_dict) # ファイルパスではなく、中身（辞書）を直接渡す
 firebase_admin.initialize_app(cred)
+# --- ここまでが置き換えたブロック ---
 
 # Create and configure the Flask app
 app = Flask(__name__)
