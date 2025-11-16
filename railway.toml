@@ -1,0 +1,14 @@
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "gunicorn --bind 0.0.0.0:$PORT backend.app:app"
+
+[build.env]
+PYTHON_VERSION = "3.11"
+
+[env]
+GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"
+FIREBASE_CRED_PATH = "backend/firebase-key.json"
+FIREBASE_PROJECT_ID = "YOUR_FIREBASE_PROJECT_ID"
+GENERATIVE_MODEL = "gemini-2.5-flash"
