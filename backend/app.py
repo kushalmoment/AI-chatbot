@@ -55,7 +55,10 @@ frontend_build_path = (Path(app.root_path) / '..' / 'frontend' / 'build').resolv
 
 # Register your API blueprint
 app.register_blueprint(chat_bp, url_prefix='/api/chat')
-
+@app.route('/')
+def health_check():
+    """A simple route to confirm the app is live."""
+    return "Chatbot backend is running.", 200
 # This is the "catch-all" route that serves your React app.
 # It handles the root path ('/') and any other path that isn't an API route.
 @app.route('/', defaults={'path': ''})
