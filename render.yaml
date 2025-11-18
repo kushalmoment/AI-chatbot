@@ -7,8 +7,8 @@ services:
     envVars:
       - key: GEMINI_API_KEY
         value: YOUR_GEMINI_API_KEY
-      - key: FIREBASE_CRED_PATH
-        value: backend/firebase-key.json
+      - key: FIREBASE_KEY_JSON
+        value: YOUR_FIREBASE_KEY_JSON
       - key: FIREBASE_PROJECT_ID
         value: YOUR_FIREBASE_PROJECT_ID
       - key: GENERATIVE_MODEL
