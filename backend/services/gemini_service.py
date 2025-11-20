@@ -21,6 +21,7 @@ logging.basicConfig(level=logging.INFO, format='--- [%(levelname)s] %(message)s 
 try:
     from google.generativeai.client import configure
     from google.generativeai.generative_models import GenerativeModel
+    from google.api_core.exceptions import ResourceExhausted
 except ImportError as e:
     print(f"--- [ERROR] Failed to import from google.generativeai: {e} ---")
     print("--- [INFO] Please install: pip install google-generativeai ---")
@@ -111,6 +112,9 @@ class GeminiService:
             logging.info("Response received successfully.")
             return response_text
 
+        except ResourceExhausted as e:
+            logging.error(f"Gemini API quota exceeded: {e}")
+            return "I'm sorry, but I've reached my usage limit for now. Please try again later or contact support if this persists."
         except Exception as e:
             logging.error(f"An error occurred while calling the Gemini API: {e}")
             logging.error(f"Error type: {type(e).__name__}")
